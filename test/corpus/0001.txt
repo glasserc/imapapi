@@ -1,0 +1,125 @@
+Return-Path: <offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org>
+Received: from newman.cs.rpi.edu (newman.cs.rpi.edu [128.113.126.12])
+	 by cliffclavin.cs.rpi.edu (Cyrus v2.3.16) with LMTPA;
+	 Wed, 01 Jun 2011 18:10:28 -0400
+X-Sieve: CMU Sieve 2.3
+X-Hash: SCtCte|51e6f5374b2f9871e505bbaaa8c52ced16d50b19|30e182d81af6c93c4d667b264e62f997
+X-Countries: Estonia, United States, Netherlands, United States
+X-SMTP-From: accepted <offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org> wagner.debian.org [217.196.43.132] (wagner.debian.org) {Netherlands}
+X-Spam-Score: -0.5 () BAYES_00,DKIM_SIGNED,DK_POLICY_TESTING,DK_SIGNED,FUZZY_CPILL,RCVD_IN_APEWSL2
+X-Spam-Report: Spam Report from newman.cs.rpi.edu (SA:3.2.5):
+	0.4 RCVD_IN_APEWSL2        RBL: Received via a relay in l2.apews.org [194.204.15.13 listed in l2.apews.org]
+	0.0 DK_POLICY_TESTING      Domain Keys: policy says domain is testing DK
+	0.0 DK_SIGNED              Domain Keys: message has a signature
+	0.0 DKIM_SIGNED            Domain Keys Identified Mail: message has a signature
+	0.0 FUZZY_CPILL            BODY: Attempt to obfuscate words in spam
+	-0.9 BAYES_00               BODY: Bayesian spam probability is 0 to 1% [score: 0.0000]
+X-Spam-Info: -0.5;
+	BAYES_00,DKIM_SIGNED,DK_POLICY_TESTING,DK_SIGNED,FUZZY_CPILL,
+	RCVD_IN_APEWSL2
+X-Spam-Scanned-By: newman.cs.rpi.edu using SpamAssassin 3.2.5 (hard limit 15)
+Authentication-Results: newman.cs.rpi.edu;
+	DomainKeys=fail (list,forward; fail (message has been altered)) header.sender=offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org;
+	DKIM=fail (list,forward; fail (message has been altered)) header.from=Sebastian@SSpaeth.de;
+	SPF=neutral (list,forward; mfrom; No applicable sender policy available) smtp.mail=offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org
+X-Auth-Failed: newman.cs.rpi.edu:p51MAM7a096606 DomainKeys (list,forward), DKIM (list,forward)
+X-Virus-Scanned-By: newman.cs.rpi.edu
+Received: from wagner.debian.org (wagner.debian.org [217.196.43.132])
+	by newman.cs.rpi.edu (8.14.3/8.14.3) with ESMTP id p51MAM7a096606
+	for <glasse@cs.rpi.edu>; Wed, 1 Jun 2011 18:10:25 -0400 (EDT)
+	(envelope-from offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org)
+Received: from localhost ([::1] helo=wagner.debian.org)
+	by wagner.debian.org with esmtp (Exim 4.72)
+	(envelope-from <offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org>)
+	id 1QRtcM-0000r9-LH
+	for glasse@cs.rpi.edu; Wed, 01 Jun 2011 22:10:22 +0000
+Received: from caiajhbdcbbj.dreamhost.com ([208.97.132.119]
+	helo=homiemail-a17.g.dreamhost.com)
+	by wagner.debian.org with esmtp (Exim 4.72)
+	(envelope-from <Sebastian@SSpaeth.de>) id 1QRtcH-0000qy-39
+	for offlineimap-project@lists.alioth.debian.org;
+	Wed, 01 Jun 2011 22:10:17 +0000
+Received: from homiemail-a17.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a17.g.dreamhost.com (Postfix) with ESMTP id 9439A7A8070;
+	Wed,  1 Jun 2011 15:10:11 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=SSpaeth.de; h=from:to:subject
+	:in-reply-to:references:date:message-id:mime-version:
+	content-type; q=dns; s=sspaeth.de; b=ldKb2O+ji+V3RHjIMrhE5NElWsY
+	ZVElV4t6sBSzZ5w6VVSfrmZgbOkFAmYnI2hNUOWM0VZPzOYjPxXytNEL6Psc6cST
+	QdZxwhNbUUM646EusOP/y+LXPbfxLBR7LItjoDmGZoDzra3PEMnMum83NwF9WgPv
+	LflcRtLsNbXHMB5s=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=SSpaeth.de; h=from:to
+	:subject:in-reply-to:references:date:message-id:mime-version:
+	content-type; s=sspaeth.de; bh=qVwcmRWHVi5i/cZ9lRxDZromKv8=; b=H
+	JwwS65JTS1VT3Bb2YdR8Y3Ou2FzMhuyLuV0nMQn3d7hPgfwXnR9WJlUfeTIq/L5v
+	xSxPJnh1tHg85xHITSf0/AVEnqFrY4DEO8/2LonC/w5595KmOPRoTjJ01luci9I0
+	ddZVGO55KmHfaurAHzfN+mw+s+4w68XsaWOe4+VCRU=
+Received: from spaetzbook.sspaeth.de (host2.altacapital.ee [194.204.15.13])
+	(using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: fax@sspaeth.de)
+	by homiemail-a17.g.dreamhost.com (Postfix) with ESMTPSA id E8E8E7A8073; 
+	Wed,  1 Jun 2011 15:10:09 -0700 (PDT)
+Received: by spaetzbook.sspaeth.de (sSMTP sendmail emulation);
+	Thu, 02 Jun 2011 00:10:07 +0200
+From: Sebastian Spaeth <Sebastian@SSpaeth.de>
+To: Olaf Schreck <chakl@syscall.de>,
+        offlineimap-project@lists.alioth.debian.org
+In-Reply-To: <loom.20110531T175104-749@post.gmane.org>
+References: <loom.20110531T175104-749@post.gmane.org>
+User-Agent: Notmuch/0.5-209-gc8b5718 (http://notmuchmail.org) Emacs/23.2.1
+	(x86_64-pc-linux-gnu)
+Date: Thu, 02 Jun 2011 00:10:07 +0200
+Message-ID: <87ei3d6w5c.fsf@SSpaeth.de>
+MIME-Version: 1.0
+X-policyd-weight: NOT_IN_SBL_XBL_SPAMHAUS=-1.5 NOT_IN_SPAMCOP=-1.5
+	NOT_IN_BL_NJABL=-1.5 HELO_IP_IN_CL_SUBNET=-1.2 (check from:
+	.sspaeth. - helo: .homiemail-a17.g.dreamhost. - helo-domain:
+	.dreamhost.) FROM/MX_MATCHES_HELO(DOMAIN)=-2; rate: -7.7
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on wagner.debian.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE
+	autolearn=unavailable version=3.3.1
+Subject: Re: restore mails from local Maildir back to IMAP
+X-BeenThere: offlineimap-project@lists.alioth.debian.org
+X-Mailman-Version: 2.1.13
+Precedence: list
+List-Id: OfflineIMAP help and discussion
+	<offlineimap-project.lists.alioth.debian.org>
+List-Unsubscribe: <http://lists.alioth.debian.org/cgi-bin/mailman/options/offlineimap-project>,
+	<mailto:offlineimap-project-request@lists.alioth.debian.org?subject=unsubscribe>
+List-Archive: <http://lists.alioth.debian.org/pipermail/offlineimap-project>
+List-Post: <mailto:offlineimap-project@lists.alioth.debian.org>
+List-Help: <mailto:offlineimap-project-request@lists.alioth.debian.org?subject=help>
+List-Subscribe: <http://lists.alioth.debian.org/cgi-bin/mailman/listinfo/offlineimap-project>,
+	<mailto:offlineimap-project-request@lists.alioth.debian.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org
+Errors-To: offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org
+X-SA-Exim-Connect-IP: ::1
+X-SA-Exim-Mail-From: offlineimap-project-bounces+glasse=cs.rpi.edu@lists.alioth.debian.org
+X-SA-Exim-Scanned: No (on wagner.debian.org); SAEximRunCond expanded to false
+X-Scanned-By: MIMEDefang 2.67 on 128.113.126.12
+
+On Tue, 31 May 2011 16:12:30 +0000 (UTC), Olaf Schreck wrote:
+> That's what I expected, but it doesn't seem to work. Here's what I did (log and 
+> config below):
+
+> OfflineIMAP 6.2.0
+
+Very unexpected. But due to changes in code and due to the fact that all
+current developers only got familiar with the code base during the
+6.3. series, I cannot really say anything about how exactly 6.2.0 works.
+
+We'd probably need a more detailed log with -d maildir -l debug.log to
+get more details, I guess.
+
+Sebastian
+
+_______________________________________________
+OfflineIMAP-project mailing list
+OfflineIMAP-project@lists.alioth.debian.org
+http://lists.alioth.debian.org/cgi-bin/mailman/listinfo/offlineimap-project
+
+OfflineIMAP homepage: http://software.complete.org/offlineimap
