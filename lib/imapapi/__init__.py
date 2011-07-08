@@ -1,3 +1,8 @@
+import os.path
+libdir = os.path.dirname(os.path.dirname(__file__))
+# FIXME: more general???
+sharedir = os.path.join(os.path.dirname(libdir), "share")
+
 class MessageSearch(object):
     pass
 

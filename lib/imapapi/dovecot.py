@@ -1,0 +1,64 @@
+import os.path
+import subprocess
+import shutil
+import grp
+import imapapi.maildir
+import imapapi.utils
+
+# Path to the dovecot executable.
+DOVECOT=imapapi.utils.which("dovecot")
+if not DOVECOT: DOVECOT = "/usr/sbin/dovecot"
+if not imapapi.utils.is_exe(DOVECOT):
+    raise RuntimeError, """dovecot could not be found on this machine.
+
+At present, dovecot is required in order to run tests."""
+
+class Dovecot(imapapi.maildir.Maildir):
+    """Sets up a 'rootless' dovecot instance in serverpath.  Mail will be kept in a maildir serverpath/mail.
+
+    You can start and stop dovecot's IMAP interface with start_server
+    and stop_server.  IMAP will run on port 10143 as testuser/testpass."""
+    def __init__(self, serverpath):
+        self.serverpath = serverpath
+        # Use real-dovecot.conf because dovecot puts a symlink in dovecot.conf
+        self.conf = os.path.join(self.serverpath, "real-dovecot.conf")
+        if not os.path.exists(self.serverpath):
+            os.mkdir(self.serverpath)
+            self.write_config()
+
+        super(Dovecot, self).__init__(os.path.join(serverpath, "mail"))
+
+    def write_config(self):
+        template = open(os.path.join(imapapi.sharedir, "dovecot.conf.template"))
+        conffile = open(self.conf, "w")
+
+        group = grp.getgrgid(os.getgid())
+        serverpath = os.path.abspath(self.serverpath)
+
+        data = template.read()
+
+        data = data.replace("MAIL_LOCATION", "maildir:"+os.path.join(serverpath, "mail"))
+        data = data.replace("WHOAMI_GROUP_ID", str(os.getgid()))
+        data = data.replace("WHOAMI_ID", str(os.getuid()))
+        data = data.replace("WHOAMI_GROUP", group.gr_name)
+        data = data.replace("WHOAMI", os.getlogin())
+        data = data.replace("DOVECOTDIR", serverpath)
+
+        conffile.write(data)
+        conffile.close()
+
+        shutil.copy(os.path.join(imapapi.sharedir, "passwd"), self.serverpath)
+
+    def start_server(self):
+        self.server = subprocess.Popen(["dovecot", "-F", "-c", self.conf], executable=DOVECOT)
+
+    def stop_server(self):
+        subprocess.check_call(["kill", str(self.server.pid)])
+        self.server = None
+
+    def _deliver(self, mesg, folder):
+        subprocess.check_call(["deliver", "-c", self.conf, mesg], executable="/usr/lib/dovecot/deliver")
+
+    def delete(self):
+        self.stop_server()
+        shutil.rmtree(self.serverpath)
