@@ -16,13 +16,10 @@ class Maildir(imapapi.Mailbox):
         """Create an empty Maildir structure in folder"""
         folder = folder or "Inbox"
         basedir = os.path.join(self.path, folder)
-        if os.path.exists(basedir):
-            # We're probably fine
-            return
 
-        os.mkdir(basedir)
-        for d in ['cur', 'new', 'tmp']:
-            os.mkdir(os.path.join(basedir, d))
+        for d in ['', 'cur', 'new', 'tmp']:
+            if not os.path.exists(os.path.join(basedir, d)):
+                os.mkdir(os.path.join(basedir, d))
 
     def delete(self):
         shutil.rmtree(self.path)

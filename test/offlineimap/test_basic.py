@@ -16,9 +16,7 @@ class TestBasic(TestOfflineImap):
 
     def test_sync(self):
         assert (0, 0, 0) == self.get_message_counts(self.local)
-
-        # cur, new, tmp not yet created
-        #assert (0, 0, 0) == self.get_message_counts(self.remote)
+        assert (0, 0, 0) == self.get_message_counts(self.remote)
 
         self.remote.deliver(self.corpus("0001.txt"))
         assert (1, 0, 1) == self.get_message_counts(self.remote)

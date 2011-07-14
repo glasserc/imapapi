@@ -35,6 +35,10 @@ class Dovecot(imapapi.maildir.Maildir):
         if newf == "Inbox": newf = ""
         return super(Dovecot, self)._list_messages(type, newf)
 
+    def create_folder(self, folder="."):
+        "Provide a different default argument (as above)"
+        return super(Dovecot, self).create_folder(folder)
+
     def write_config(self):
         template = open(os.path.join(imapapi.sharedir, "dovecot.conf.template"))
         conffile = open(self.conf, "w")
