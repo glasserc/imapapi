@@ -16,3 +16,20 @@ def which(program):
                 return exe_file
 
     return None
+
+def fill_template(srcfile, destfile, vars):
+    template = open(srcfile)
+    conffile = open(destfile, "w")
+
+    data = template.read()
+
+    keys = vars.keys()
+
+    # Replace longer keys first, otherwise we'll replace WHOAMI in WHOAMI_GROUP
+    keys.sort(key = len, reverse=True)
+
+    for key in keys:
+        data = data.replace(key, vars[key])
+
+    conffile.write(data)
+    conffile.close()

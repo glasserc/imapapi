@@ -40,23 +40,18 @@ class Dovecot(imapapi.maildir.Maildir):
         return super(Dovecot, self).create_folder(folder)
 
     def write_config(self):
-        template = open(os.path.join(imapapi.sharedir, "dovecot.conf.template"))
-        conffile = open(self.conf, "w")
-
         group = grp.getgrgid(os.getgid())
         serverpath = os.path.abspath(self.serverpath)
 
-        data = template.read()
-
-        data = data.replace("MAIL_LOCATION", "maildir:"+os.path.join(serverpath, "mail"))
-        data = data.replace("WHOAMI_GROUP_ID", str(os.getgid()))
-        data = data.replace("WHOAMI_ID", str(os.getuid()))
-        data = data.replace("WHOAMI_GROUP", group.gr_name)
-        data = data.replace("WHOAMI", os.getlogin())
-        data = data.replace("DOVECOTDIR", serverpath)
-
-        conffile.write(data)
-        conffile.close()
+        utils.fill_template(os.path.join(imapapi.sharedir, "dovecot.conf.template"),
+                            self.conf, {
+                "MAIL_LOCATION": "maildir:"+os.path.join(serverpath, "mail"),
+                "WHOAMI_GROUP_ID": str(os.getgid()),
+                "WHOAMI_ID": str(os.getuid()),
+                "WHOAMI_GROUP": group.gr_name,
+                "WHOAMI": os.getlogin(),
+                "DOVECOTDIR": serverpath,
+                })
 
         shutil.copy(os.path.join(imapapi.sharedir, "passwd"), self.serverpath)
 
