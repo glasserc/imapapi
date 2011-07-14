@@ -22,11 +22,18 @@ class Dovecot(imapapi.maildir.Maildir):
         self.serverpath = serverpath
         # Use real-dovecot.conf because dovecot puts a symlink in dovecot.conf
         self.conf = os.path.join(self.serverpath, "real-dovecot.conf")
+        self.server = None
         if not os.path.exists(self.serverpath):
             os.mkdir(self.serverpath)
             self.write_config()
 
         super(Dovecot, self).__init__(os.path.join(serverpath, "mail"))
+
+    def _list_messages(self, type, folder):
+        "Dovecot doesn't actually use a folder called Inbox; instead it just reads/writes to the mail directory."
+        newf = folder
+        if newf == "Inbox": newf = ""
+        return super(Dovecot, self)._list_messages(type, newf)
 
     def write_config(self):
         template = open(os.path.join(imapapi.sharedir, "dovecot.conf.template"))
@@ -53,11 +60,13 @@ class Dovecot(imapapi.maildir.Maildir):
         self.server = subprocess.Popen(["dovecot", "-F", "-c", self.conf], executable=DOVECOT)
 
     def stop_server(self):
+        if not self.server: return
         subprocess.check_call(["kill", str(self.server.pid)])
         self.server = None
 
     def _deliver(self, mesg, folder):
-        subprocess.check_call(["deliver", "-c", self.conf, mesg], executable="/usr/lib/dovecot/deliver")
+        # FIXME: pass via stdin too?
+        subprocess.check_call(["deliver", "-c", self.conf, "-m", folder, "-p", mesg], executable="/usr/lib/dovecot/deliver")
 
     def delete(self):
         self.stop_server()
