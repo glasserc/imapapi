@@ -1,12 +1,15 @@
 import imapapi.maildir
 import imapapi.dovecot
-from test.offlineimap import TestOfflineImap
+from test.offlineimap import OfflineImapTest
 
-class TestBasic(TestOfflineImap):
+class TestBasic(OfflineImapTest):
     def setUp(self):
         self.local = imapapi.maildir.Maildir("tmp/maildir")
-        self.remote = imapapi.dovecot.Dovecot("tmp/dovecot-basic")
         # FIXME: how do we insist on starting 'fresh'?
+        # If we delete in the tear-down, we can't inspect the results
+        # of the test.  But if we delete it here, we really have to
+        # create it twice.
+        self.remote = imapapi.dovecot.Dovecot("tmp/dovecot-basic")
         self.remote.delete()
         self.remote = imapapi.dovecot.Dovecot("tmp/dovecot-basic")
         self.remote.start_server()

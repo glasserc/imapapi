@@ -1,7 +1,15 @@
 ## Dovecot configuration file template.
-
+#
+# This is the configuration file that the imapapi Dovecot class will
+# use to spawn "rootless" Dovecot setups.
+#
 # Note that some ALLCAPSWORDS get replaced by the Dovecot class.  See
 # imapapi/dovecot.py for details.
+#
+# N.B.: Not every dovecot configuration variable is in this file!  I
+# tried to cut down the size of the file as much as possible by
+# getting rid of variables (and their documentation) that I thought
+# we'd never use.
 
 # Base directory where to store runtime data.
 base_dir = DOVECOTDIR

@@ -1,6 +1,6 @@
 from test import ImapApiTest
 
-class TestOfflineImap(ImapApiTest):
+class OfflineImapTest(ImapApiTest):
     def __init__(self):
         self.mailboxes = {}
 
