@@ -5,13 +5,7 @@ from test.offlineimap import OfflineImapTest
 class TestBasic(OfflineImapTest):
     def setUp(self):
         self.local = imapapi.maildir.Maildir("tmp/maildir")
-        # FIXME: how do we insist on starting 'fresh'?
-        # If we delete in the tear-down, we can't inspect the results
-        # of the test.  But if we delete it here, we really have to
-        # create it twice.
-        self.remote = imapapi.dovecot.Dovecot("tmp/dovecot-basic")
-        self.remote.delete()
-        self.remote = imapapi.dovecot.Dovecot("tmp/dovecot-basic")
+        self.remote = imapapi.dovecot.Dovecot.fresh("tmp/dovecot-basic")
         self.remote.start_server()
 
     def tearDown(self):
@@ -29,7 +23,7 @@ class TestBasic(OfflineImapTest):
 
         assert (1, 0, 1) == self.get_message_counts(self.local), "OfflineIMAP didn't copy messages"
 
-        # Check that reading the message locally syncs back this status
+        # Check that offlineimap syncs back "read" status
         unread_id = self.local.list_messages(imapapi.UNREAD)[0]
 
         self.local.mark_message(unread_id, imapapi.READ)

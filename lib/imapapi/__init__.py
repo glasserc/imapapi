@@ -29,6 +29,19 @@ class Mailbox(object):
     def __init__(self):
         pass
 
+    @classmethod
+    def fresh(cls, *args, **kwargs):
+        """Insist on a fresh mailbox (without any mail).
+
+        This constructs this Mailbox and does whatever magic it has to
+        in order to guarantee that it will not have any mail.
+
+        This way you don't have to delete your mailboxes as part of
+        tear-down.  Thus, if there's an error, you can see what happened."""
+        self = cls(*args, **kwargs)
+        self.delete()
+        return cls(*args, **kwargs)
+
     def count_messages(self, type, folder=None):
         """Count messages of type (READ, UNREAD) in the folder :argument:`folder`, or Inbox if None."""
         return self._count_messages(type, folder or "Inbox")
