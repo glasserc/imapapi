@@ -69,6 +69,8 @@ class Maildir(imapapi.Mailbox):
 
             # FIXME: am I some kind of idiot, or is offlineimap
             # dumping messages into new that already have :2,?
+            # If so, isn't this a bug?  Shouldn't such filenames only
+            # exist in cur/?
             newmesg = mesg
             if ":2," not in newmesg: newmesg = newmesg + ":2,"
 
