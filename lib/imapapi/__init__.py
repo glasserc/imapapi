@@ -43,15 +43,15 @@ class Mailbox(object):
         return cls(*args, **kwargs)
 
     def count_messages(self, type, folder=None):
-        """Count messages of type (READ, UNREAD) in the folder :argument:`folder`, or Inbox if None."""
-        return self._count_messages(type, folder or "Inbox")
+        """Count messages of type (READ, UNREAD) in the folder :argument:`folder`, or INBOX if None."""
+        return self._count_messages(type, folder or "INBOX")
 
     def _count_messages(self, type, folder):
         return len(self.list_messages(type, folder))
 
     def list_messages(self, type, folder=None):
         """Return message IDs matching the type in the folder."""
-        return self._list_messages(type, folder or "Inbox")
+        return self._list_messages(type, folder or "INBOX")
 
     def _list_messages(self, type, folder):
         raise NotImplementedYet
@@ -60,7 +60,7 @@ class Mailbox(object):
         """mesg is either a file-like object which will be read, or a filename.
 
         Return a message ID."""
-        return self._deliver(mesg, folder or "Inbox")
+        return self._deliver(mesg, folder or "INBOX")
 
     def _deliver(self, mesg, folder):
         raise NotImplementedYet
@@ -69,7 +69,7 @@ class Mailbox(object):
         """Mark a message as READ or UNREAD.  message_id is presumed to be a message in folder.
 
         Return a new message id?"""
-        return self._mark_message(message_id, type, folder or "Inbox")
+        return self._mark_message(message_id, type, folder or "INBOX")
 
     def _mark_message(self, message_id, type, folder):
         raise NotImplementedYet

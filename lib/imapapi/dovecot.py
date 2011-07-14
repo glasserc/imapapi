@@ -32,7 +32,7 @@ class Dovecot(imapapi.maildir.Maildir):
     def _list_messages(self, type, folder):
         "Dovecot doesn't actually use a folder called Inbox; instead it just reads/writes to the mail directory."
         newf = folder
-        if newf == "Inbox": newf = ""
+        if newf == "INBOX": newf = ""
         return super(Dovecot, self)._list_messages(type, newf)
 
     def create_folder(self, folder="."):

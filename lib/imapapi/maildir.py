@@ -14,7 +14,7 @@ class Maildir(imapapi.Mailbox):
 
     def create_folder(self, folder=None):
         """Create an empty Maildir structure in folder"""
-        folder = folder or "Inbox"
+        folder = folder or "INBOX"
         basedir = os.path.join(self.path, folder)
 
         for d in ['', 'cur', 'new', 'tmp']:
