@@ -43,8 +43,8 @@ class Dovecot(imapapi.maildir.Maildir):
         group = grp.getgrgid(os.getgid())
         serverpath = os.path.abspath(self.serverpath)
 
-        utils.fill_template(os.path.join(imapapi.sharedir, "dovecot.conf.template"),
-                            self.conf, {
+        imapapi.utils.fill_template(os.path.join(imapapi.sharedir, "dovecot.conf.template"),
+                                    self.conf, {
                 "MAIL_LOCATION": "maildir:"+os.path.join(serverpath, "mail"),
                 "WHOAMI_GROUP_ID": str(os.getgid()),
                 "WHOAMI_ID": str(os.getuid()),
