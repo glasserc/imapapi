@@ -67,10 +67,15 @@ class Maildir(imapapi.Mailbox):
                 # no need to mark it unread; it's already in "new"
                 return mesg
 
+            # FIXME: am I some kind of idiot, or is offlineimap
+            # dumping messages into new that already have :2,?
+            newmesg = mesg
+            if ":2," not in newmesg: newmesg = newmesg + ":2,"
+
             # move it to cur
-            curdest = os.path.join(fdir, "cur", mesg + ":2,")
+            curdest = os.path.join(fdir, "cur", newmesg)
             shutil.move(newsrc, curdest)
-            mesg = mesg + ":2,"
+            mesg = newmesg
 
         mesgbase, mesgflags = mesg.split(":2,")
         if type == imapapi.READ:
