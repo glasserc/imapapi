@@ -1,15 +1,21 @@
+import os.path
+import shutil
 import imapapi.maildir
 import imapapi.dovecot
 from test.offlineimap import OfflineImapTest
 
 class TestBasic(OfflineImapTest):
     def setUp(self):
-        self.local = imapapi.maildir.Maildir("tmp/maildir")
-        self.remote = imapapi.dovecot.Dovecot.fresh("tmp/dovecot-basic")
+        self.local = imapapi.maildir.Maildir.fresh("tmp/offlineimap-maildir")
+        self.remote = imapapi.dovecot.Dovecot.fresh("tmp/offlineimap-dovecot")
         self.remote.start_server()
 
     def tearDown(self):
         self.remote.stop_server()
+        if os.path.exists("tmp/offlineimap-meta"):
+            shutil.rmtree("tmp/offlineimap-meta")
+        # FIXME: it's like I forgot Python???
+        #super(TestBasic, self).tearDown()
 
     def test_sync(self):
         assert (0, 0, 0) == self.get_message_counts(self.local)
