@@ -1,7 +1,9 @@
 Summary
 -------
 
-``imapapi`` is a library for accessing mailboxes, as well as a test suite that uses this library to verify the behavior of other mail-handling software (for example, ``offlineimap``).  To test offlineimap, we start up a local IMAP server
+``imapapi`` is a library for accessing mailboxes, as well as a test suite that uses this library to verify the behavior of other mail-handling software (for example, ``offlineimap``).  To test offlineimap, we start up a local IMAP server and run offlineimap against it.
+
+imapapi is licensed under an MIT license.  imapapi is provided as-is with no guarantee.
 
 Layout
 ------
